@@ -17,6 +17,7 @@ https://youtu.be/XUFVT8bGJhw
 5. ​K8s 安全专家认证：https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist
 6. :star:K8s攻防教程：https://securekubernetes.com
 7. :star:Provide IAM credentials to containers: https://github.com/jtblin/kube2iam
+8. :star: 小topic - Setting Up Pod Security Policies in Kubernetes: https://www.youtube.com/watch?v=zkTsj-5o5YI
 
 ##### Books
 
