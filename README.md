@@ -1,4 +1,4 @@
-### Practices for Kubernetes Security
+## Practices for Kubernetes Security
 
 *****
 
@@ -6,7 +6,15 @@
 
 proposal.md 和 proposal-1.md只是格式不同，proposal is only one page.
 
+###### 2022.04.12
+
+Proposal Feedback:
+
+This could be a really interesting project. I also wonder how a recent vulnerability in **kubernetes (CVE-2022-0492)** could be affected by this approach. You might also want to discuss **how other bugs/vulnerabilities in kubernetes could be detected/prevented with your approach**. Apart from having some functional prototypes, I think it'd be good if you can explain **what Falco can/cannot do, and what are the assumptions that it needs to achieve the promised guarantees**. Since this is a 3-member group, I'd expect to see a bit more than what the 2-member/1-member groups have to offer. Good luck and I look forward to seeing your report + presentation.
+
 *****
+
+#### Preparation
 
 ##### Overview
 
@@ -44,3 +52,28 @@ E-books from CUHK Library
 [Securing Kubernetes Secrets by Alex Soto Bueno and Andrew Block](https://www.manning.com/books/securing-kubernetes-secrets)
 
 [Kubernetes in Action, Second Edition by Marko Lukša](https://www.manning.com/books/kubernetes-in-action-second-edition)
+
+#### Content
+
+##### Outline of K8s security
+
+How most of bugs/vulnerabilities in kubernetes could be detected/prevented with your approach?
+
+可以从电子书中总结
+
+##### Learn Security through CVE
+
+[CVE-2022-0492](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0492)
+
+CVE...
+
+网上查询
+
+##### Protect K8s from crypto-mining
+
+电子书中的case
+
+##### Falcon's can/can't do, assumptions for guarantees
+
+网上查询与[Falcon官网](https://falco.org)
+
