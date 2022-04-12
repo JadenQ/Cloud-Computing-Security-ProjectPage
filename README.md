@@ -55,13 +55,13 @@ E-books from CUHK Library
 
 #### Content
 
-##### Outline of K8s security
+##### Outline of K8s security (promised in proposal)
 
 How most of bugs/vulnerabilities in kubernetes could be detected/prevented with your approach?
 
 可以从电子书中总结
 
-##### Learn Security through CVE
+##### Learn Security through CVE (raised by prof.)
 
 [CVE-2022-0492](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0492)
 
@@ -69,11 +69,11 @@ CVE...
 
 网上查询
 
-##### Protect K8s from crypto-mining
+##### Protect K8s from crypto-mining  (promised in proposal)
 
 电子书中的case
 
-##### Falcon's can/can't do, assumptions for guarantees
+##### Falcon's can/can't do, assumptions for guarantees (promised and care from prof.)
 
 网上查询与[Falcon官网](https://falco.org)
 
