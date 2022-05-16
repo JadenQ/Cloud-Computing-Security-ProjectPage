@@ -2,7 +2,7 @@
 
 ### Introduction
 
-We propose to make an overview about ways to build a secure Kubernetes cluster. This project will slightly touches most of the issues that can threat the Kubernetes cluster, container and cloud resources these days, from the aspect of development phase, application phase, infrastructure phase and detection phase. Mostly, we focus on the application of Falco, which is a open source standard tool for continuous risk and threat detection, on Kubernetes, and deploy a cluster that is easy-to-monitor and relatively safe from most of the threats including crypto-mining.
+We propose to make an overview about ways to build a secure Kubernetes cluster. This project will slightly touches most of the issues that can threat the Kubernetes cluster, container and cloud resources these days, <u>from the aspect of development phase, application phase, infrastructure phase and detection phase (Zhu Yilin)</u>. Moreover, we focus on the application of Falco, which is a open source standard tool for continuous risk and threat detection, on Kubernetes, and deploy a cluster that is easy-to-monitor and relatively safe from most of the threats including crypto-mining (Qi Jiadun). We also analysis a recent vulnerability in **kubernetes (CVE-2022-0492)** to see 
 
 ### Proposal
 

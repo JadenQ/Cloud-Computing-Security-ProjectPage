@@ -1,4 +1,14 @@
-# CVE-2022-0492
+## Secure a Kubernetes Cluster
+
+### Introduction
+
+We propose to make an overview about ways to build a secure Kubernetes cluster. This project will slightly touches most of the issues that can threat the Kubernetes cluster, container and cloud resources these days, <u>from the aspect of development phase, application phase, infrastructure phase and detection phase (Zhu Yilin)</u>. Moreover, we focus on the application of Falco, which is a open source standard tool for continuous risk and threat detection, on Kubernetes,  study what Falco can/cannot do, and what are the assumptions that it needs to achieve the promised guarantees. Try to deploy a cluster that is easy-to-monitor and relatively safe from most of <u>the threats including crypto-mining</u> (Qi Jiadun). We also analysis a recent vulnerability in kubernetes (CVE-2022-0492) to see its mechanism and if it can be solved by some of our implementation (Li Yonghui).
+
+### Overview of Kubernetes Security
+
+### Secure Kubernetes Cluster with Falco
+
+### Analysis of CVE-2022-0492
 
 #### The Information of CVE-2022-0492
 
@@ -224,3 +234,8 @@ https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [9] New Linux Vulnerability CVE-2022-0492
 
 https://unit42.paloaltonetworks.com/cve-2022-0492-cgroups/
+
+
+
+### Conclusion
+
