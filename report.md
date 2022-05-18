@@ -208,7 +208,7 @@ kubectl exec "$container" -- curl -s localhost:8765/healthz; echo
 
 Simply trigger a Falco warning using a potentially dangerous command:
 
-![image-20220518092958754](/Users/comebackerma/Documents/Cloud-Computing-Security-ProjectPage/resource/image-20220518092958754.png)
+![image-20220518092958754](./resource/image-20220518092958754.png)
 
 ##### Write customized rules - Unauthorized mount process
 
