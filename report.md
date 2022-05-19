@@ -2,7 +2,7 @@
 
 ### Introduction
 
-We propose to make an overview about ways to build a secure Kubernetes cluster. Our projects is composed of three sessions. The first session will slightly touches most of the issues that can threat the Kubernetes cluster, container and cloud resources these days, <u>from the aspect of development phase, application phase, infrastructure phase and detection phase (Zhu Yilin)</u>. In the second session, we focus on the application of Falco, which is a open source standard tool for continuous risk and threat detection, on Kubernetes,  study what Falco can and cannot do by introducing its components and mechanism. Install Falco and setup simple rules to get start with this tool based on Linux kernel, and practice with the threats including crypto-mining (Qi Jiadun). We also analysis a recent vulnerability in kubernetes (CVE-2022-0492) in session 3 to see its mechanism and how it can be detected by Falco (Li Yonghui).
+We propose to make an overview about ways to build a secure Kubernetes cluster. Our projects is composed of three sessions. The first session will slightly touches most of the issues that can threat the Kubernetes cluster, container and cloud resources these days,  and provide an overview of kubernetes security strategy(Zhu Yilin). In the second session, we focus on the application of Falco, which is a open source standard tool for continuous risk and threat detection on Kubernetes,  study what Falco can and cannot do by introducing its components and mechanism. Install Falco and setup simple rules to get start with this tool based on Linux kernel, and practice with the threats including crypto-mining (Qi Jiadun). We also analysis a recent vulnerability in kubernetes (CVE-2022-0492) in session 3 to see its mechanism and how it can be detected by Falco (Li Yonghui).
 
 ### Session1 - Overview of Kubernetes Security
 
@@ -18,7 +18,7 @@ Falco is a de facto (actually being used) tool to detects anomalous behavior or 
 
 The cloud native security landscape is composed of two portions, prevention and detection. **Prevention** is to change the behavior of an undesired process, like stopping the malicious process etc, tools like *seccomp*, *AppArmor* fit into this domain. While **detection** is to monitor the process and evaluate against a set of rules, and alert the users of the behavior of process, tools like **Falco** and auditd etc. fits in this category. In practice, we need both prevention and detection to secure a cloud native platform, we are going to introduce the use of Falco in this report.
 
-###### What are normal/anomalous behavior?
+###### What are normal/anomalous behavior - the assumption for Falco security
 
 We can group normal behaviors  into three categories from application's perspective, as follows:
 
@@ -32,7 +32,9 @@ Or, from a system's perspective, we have the following types of activities:
 - Process activities such as execve and clone system calls
 - Network activities such as accept, connect, and send
 
-Or, all the Kubernetes activities like configmap, manipulating pods etc. should all be considered as normal.
+Or, all the Kubernetes activities like configmap, manipulating pods etc. should all be considered as normal. 
+
+Anomaly detection systems often rely on system call sequences to characterize the normal behavior of applications under stable operation. Once the detection tool has been established, subsequent events are analyzed to identify deviations, in the assumption that anomalies represent evidence of an attack
 
 ###### How Falco detect?
 
@@ -261,8 +263,8 @@ A crypto-mining attack on Tesla's Kubernetes cluster occurred in 2018 and was re
 
 Among all of the different kinds of *malware*, **Cryptominer attacks** are one of the main threats in *cloud-native* environments. The basic idea under this kind of attack is that you should jointly share your computational resources with the attacker so that he can mine cryptocurrencies at your expense. Other threats are easier to be recognized but in the case of cryptominers, it is hard to discern its activity from that of harmless processes. But there are some last-line defence methods to recognize them:
 
-1. Observe networking activity to specific endpoints (`domain_name`:`port`).
-2. Observe resource usage and compare it with a baseline.
+1. Observe networking activity to specific endpoints (`domain_name`:`port`). *See method 1,2 in Step 3.*
+2. Observe resource usage and compare it with a baseline. *See method 3 in Step 3.*
 
 And thanks for [sysdig group](https://sysdig.com) to provide such fabulous lab environment.
 
